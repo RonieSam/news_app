@@ -27,7 +27,7 @@ export default class NavBar extends Component {
             <li><a className="dropdown-item"  href='/health'>Health</a></li>
             <li><a className="dropdown-item" href='/science' >Science</a></li>
             <li><a className="dropdown-item" href='/sports' >Sports</a></li>
-            <li><a className="dropdown-item"  href='/tech'>Technology</a></li>
+            <li><a className="dropdown-item"  href='/technology'>Technology</a></li>
 
           </ul>
         </li>

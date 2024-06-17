@@ -65,7 +65,7 @@ export default class newsComponent extends Component {
   
   render() {
     return (
-      this.state.loading?<Spinner/>:<div className='mx-5 my-5'>
+      this.state.loading?<Spinner/>:<div className='my-5'>
             <div className='row mx-4'>
               {this.state.article.map((element) => {
                 return <div className="col-md-4 my-3" key={element.title.replace(" ", "-")} >
@@ -74,8 +74,8 @@ export default class newsComponent extends Component {
               })}
             </div>
             <div className="d-flex justify-content-between">
-              <button disabled={this.state.page === 1} type="button" className="btn btn-dark" onClick={this.handlePreviousPage}>Previous</button>
-              <button disabled={this.state.page === this.state.totalPage} type="button" className="btn btn-dark" onClick={this.handleNextPage}>Next</button>
+              <button disabled={this.state.page === 1} type="button" className="btn btn-dark mx-5 my-3" onClick={this.handlePreviousPage}>Previous</button>
+              <button disabled={this.state.page === this.state.totalPage} type="button" className="btn btn-dark mx-5 my-3" onClick={this.handleNextPage}>Next</button>
             </div>  
           </div>
     )
