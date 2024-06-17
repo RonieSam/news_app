@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
 import NewsItemComponent from './newsItemComponent'
-import NewsDetailComponent from './newsDetailComponent'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useParams
-} from "react-router-dom"
+import PropsTypes from "prop-types"
 import Spinner from './spinner'
 
 export default class newsComponent extends Component {
@@ -15,14 +9,23 @@ export default class newsComponent extends Component {
     this.state = {
       article: [],
       page: 1,
-      loading:false
+      loading:false,
+     
     }
   }
+  
+  static defaultProps={
+    category:"general"
+  }
+  static propsTypes={
+    category:PropsTypes.string
+  }
+
   async componentDidMount() {
     this.setState({
-      loading:true
+      loading:true,
     })
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page}&pageSize=18`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page}&pageSize=18&category=${this.props.category}`
     let data = await fetch(url)
     let parsedData = await data.json()
     this.setState({
@@ -36,7 +39,7 @@ export default class newsComponent extends Component {
     this.setState({
       loading:true
     })
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page + 1}&pageSize=18`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page + 1}&pageSize=18&category=${this.props.category}`
     let data = await fetch(url)
     let parsedData = await data.json()
     this.setState({
@@ -49,7 +52,7 @@ export default class newsComponent extends Component {
     this.setState({
       loading:true
     })
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page - 1}&pageSize=18`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page - 1}&pageSize=18&category=${this.props.category}`
     let data = await fetch(url)
     let parsedData = await data.json()
     console.log(this.state.totalPage)
@@ -59,24 +62,10 @@ export default class newsComponent extends Component {
       loading:false
     })
   }
-  newsDetail=()=>{
-    console.log('this.state.article')
-
-    const {title}=useParams()
-    let article=this.state.article.find((element)=>{
-      let repElement=element.title.replace("/","")
-      console.log(title===repElement,title,repElement)
-      return repElement===title})
-    
-      console.log(this.state.article,title)
-    
-      return <NewsDetailComponent article={article} />
-  }
+  
   render() {
     return (
-      <Router>
-        <Routes>
-          <Route path='/' element={this.state.loading?<Spinner/>:<div className='mx-5 my-5'>
+      this.state.loading?<Spinner/>:<div className='mx-5 my-5'>
             <div className='row mx-4'>
               {this.state.article.map((element) => {
                 return <div className="col-md-4 my-3" key={element.title.replace(" ", "-")} >
@@ -88,12 +77,7 @@ export default class newsComponent extends Component {
               <button disabled={this.state.page === 1} type="button" className="btn btn-dark" onClick={this.handlePreviousPage}>Previous</button>
               <button disabled={this.state.page === this.state.totalPage} type="button" className="btn btn-dark" onClick={this.handleNextPage}>Next</button>
             </div>  
-          </div>}/>
-
-          <Route path='/:title' element={<this.newsDetail />}/>
-          
-        </Routes>
-      </Router>
+          </div>
     )
   }
 }
