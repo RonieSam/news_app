@@ -68,6 +68,7 @@ export default class newsComponent extends Component {
   }
   render() {
     return (
+<<<<<<< HEAD
       this.state.loading?<Spinner/>:
       <div className='my-5'>
           <InfinteScroll
@@ -76,6 +77,9 @@ export default class newsComponent extends Component {
           hasMore={this.state.totalResults>this.state.article.length}
           loader={<Spinner/>}
         >
+=======
+      this.state.loading?<Spinner/>:<div className='my-5'>
+>>>>>>> c27643240c27fd2e7b8be214934f978db36d2acb
             <div className='row mx-4'>
               {this.state.article.map((element) => {
             
@@ -84,10 +88,17 @@ export default class newsComponent extends Component {
                 </div>:""
               })}
             </div>
+<<<<<<< HEAD
 
             </InfinteScroll>
 
             
+=======
+            <div className="d-flex justify-content-between">
+              <button disabled={this.state.page === 1} type="button" className="btn btn-dark mx-5 my-3" onClick={this.handlePreviousPage}>Previous</button>
+              <button disabled={this.state.page === this.state.totalPage} type="button" className="btn btn-dark mx-5 my-3" onClick={this.handleNextPage}>Next</button>
+            </div>  
+>>>>>>> c27643240c27fd2e7b8be214934f978db36d2acb
           </div>
     )
   }
