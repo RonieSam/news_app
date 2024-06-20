@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import NewsItemComponent from './newsItemComponent'
 import PropsTypes from "prop-types"
 import Spinner from './spinner'
+import InfinteScroll from "react-infinite-scroll-component"
+import { v4 as uuidv4 } from 'uuid';
 
 export default class newsComponent extends Component {
   constructor() {
@@ -10,6 +12,7 @@ export default class newsComponent extends Component {
       article: [],
       page: 1,
       loading:false,
+      totalResults:0
      
     }
   }
@@ -21,62 +24,69 @@ export default class newsComponent extends Component {
     category:PropsTypes.string
   }
 
-  async componentDidMount() {
+  handleFetchNews=async(page)=>{
+    this.props.setProgress(0)
     this.setState({
       loading:true,
     })
-    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page}&pageSize=18&category=${this.props.category}`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&country=in&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${page}&pageSize=18&category=${this.props.category}`
+    this.props.setProgress(25)
+
     let data = await fetch(url)
+    this.props.setProgress(50)
+
     let parsedData = await data.json()
+    this.props.setProgress(75)
+
     this.setState({
       article: parsedData.articles,
-      totalPage: Math.ceil(parsedData.totalResults / 20),
-      loading:false
+      page:page,
+      loading:false,
+      totalResults:parsedData.totalResults
     })
+    this.props.setProgress(100)
+
+  }
+  async componentDidMount() {
+   this.handleFetchNews(this.state.page)
   }
 
-  handleNextPage = async () => {
-    this.setState({
-      loading:true
-    })
-    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page + 1}&pageSize=18&category=${this.props.category}`
-    let data = await fetch(url)
-    let parsedData = await data.json()
-    this.setState({
-      article: parsedData.articles,
-      page: this.state.page + 1,
-      loading:false
-    })
-  }
-  handlePreviousPage = async () => {
-    this.setState({
-      loading:true
-    })
-    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${this.state.page - 1}&pageSize=18&category=${this.props.category}`
-    let data = await fetch(url)
-    let parsedData = await data.json()
-    console.log(this.state.totalPage)
-    this.setState({
-      article: parsedData.articles,
-      page: this.state.page - 1,
-      loading:false
-    })
-  }
   
+  fetchData=async()=>{
+    
+    this.setState({
+      page:this.state.page+1
+    })
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=fd61faafbca345aaab290b8ced475e0e&country=in&page=${this.state.page}&pageSize=18&category=${this.props.category}`
+    let data = await fetch(url)
+    let parsedData = await data.json()
+    this.setState({
+      article: this.state.article.concat(parsedData.articles),
+      totalResults:parsedData.totalResults
+    })
+  }
   render() {
     return (
-      this.state.loading?<Spinner/>:<div className='my-5'>
+      this.state.loading?<Spinner/>:
+      <div className='my-5'>
+          <InfinteScroll
+          dataLength={this.state.article.length}
+          next={this.fetchData}
+          hasMore={this.state.totalResults!==this.state.article.length}
+          loader={<Spinner/>}
+        >
             <div className='row mx-4'>
               {this.state.article.map((element) => {
-                return <div className="col-md-4 my-3" key={element.title.replace(" ", "-")} >
+            
+                return element?<div className="col-md-4 my-3" key={uuidv4()} >
                   <NewsItemComponent title={element.title} description={element.description} author={element.author} imgURL={element.urlToImage} newsUrl={element.url}/>
-                </div>
+                </div>:""
               })}
             </div>
-            <div className="d-flex justify-content-between">
-              <button disabled={this.state.page === 1} type="button" className="btn btn-dark mx-5 my-3" onClick={this.handlePreviousPage}>Previous</button>
-              <button disabled={this.state.page === this.state.totalPage} type="button" className="btn btn-dark mx-5 my-3" onClick={this.handleNextPage}>Next</button>
-            </div>  
+
+            </InfinteScroll>
+
+            
           </div>
     )
   }
