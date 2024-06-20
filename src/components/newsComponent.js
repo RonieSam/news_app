@@ -29,7 +29,7 @@ export default class newsComponent extends Component {
     this.setState({
       loading:true,
     })
-    let url = `https://newsapi.org/v2/top-headlines?language=en&country=in&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${page}&pageSize=18&category=${this.props.category}`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=c42f9f5e5ea34287b58a943371d94304&page=${page}&pageSize=18&category=${this.props.category}`
     this.props.setProgress(25)
 
     let data = await fetch(url)
@@ -57,9 +57,10 @@ export default class newsComponent extends Component {
     this.setState({
       page:this.state.page+1
     })
-    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=fd61faafbca345aaab290b8ced475e0e&country=in&page=${this.state.page}&pageSize=18&category=${this.props.category}`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=fd61faafbca345aaab290b8ced475e0e&page=${this.state.page}&pageSize=18&category=${this.props.category}`
     let data = await fetch(url)
     let parsedData = await data.json()
+    console.log(this.state.totalResults,this.state.article.length)
     this.setState({
       article: this.state.article.concat(parsedData.articles),
       totalResults:parsedData.totalResults
@@ -72,7 +73,7 @@ export default class newsComponent extends Component {
           <InfinteScroll
           dataLength={this.state.article.length}
           next={this.fetchData}
-          hasMore={this.state.totalResults!==this.state.article.length}
+          hasMore={this.state.totalResults>this.state.article.length}
           loader={<Spinner/>}
         >
             <div className='row mx-4'>

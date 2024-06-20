@@ -15,7 +15,6 @@ export default class App extends Component {
     }
   }
   setProgress=(pro)=>{
-    console.log(pro)
     this.setState({
       progress:pro
     })
