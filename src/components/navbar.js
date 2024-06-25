@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
+import {Link} from "react-router-dom"
+const NavBar =()=>{
 
-export default class NavBar extends Component {
-  render() {
     return (
 
       <div>
@@ -21,13 +21,13 @@ export default class NavBar extends Component {
             Category 
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item"  href='/'>All</a></li>
-            <li><a className="dropdown-item"  href='/business'>Business</a></li>
-            <li><a className="dropdown-item"  href='/entertainment'>Entertainment</a></li>
-            <li><a className="dropdown-item"  href='/health'>Health</a></li>
-            <li><a className="dropdown-item" href='/science' >Science</a></li>
-            <li><a className="dropdown-item" href='/sports' >Sports</a></li>
-            <li><a className="dropdown-item"  href='/technology'>Technology</a></li>
+            <li><Link className="dropdown-item"  to='/'>All</Link></li>
+            <li><Link className="dropdown-item"  to='/business'>Business</Link></li>
+            <li><Link className="dropdown-item"  to='/entertainment'>Entertainment</Link></li>
+            <li><Link className="dropdown-item"  to='/health'>Health</Link></li>
+            <li><Link className="dropdown-item" to='/science' >Science</Link></li>
+            <li><Link className="dropdown-item" to='/sports' >Sports</Link></li>
+            <li><Link className="dropdown-item"  to='/technology'>Technology</Link></li>
 
           </ul>
         </li>
@@ -39,5 +39,6 @@ export default class NavBar extends Component {
 </nav>
       </div>
     )
-  }
+  
 }
+export default NavBar
