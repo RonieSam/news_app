@@ -26,7 +26,7 @@ const App =()=> {
             onLoaderFinished={() => setProgress(0)}
           />
           <NavBar />
-          <div class="my-5 fs-2 fw-bolder">News Monkey</div>
+          <div className="my-5 fs-2 fw-bolder">News Monkey</div>
           <Routes>
             <Route exact path='/' element={<NewsComponent key="general" setProgress={setProgress} category='general' />} />
             <Route exact path='/business' element={<NewsComponent key="business" setProgress={setProgress} category='business' />} />

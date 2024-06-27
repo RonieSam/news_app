@@ -41,9 +41,10 @@ const NewsComponent=(props)=>{
 
   
   const fetchData=async()=>{
-    setPage(page+1)
    
-    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=fd61faafbca345aaab290b8ced475e0e&page=${page}&pageSize=18&category=${props.category}`
+    let url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=fd61faafbca345aaab290b8ced475e0e&page=${page+1}&pageSize=18&category=${props.category}`
+    setPage(page+1)
+
     let data = await fetch(url)
     let parsedData = await data.json()
     console.log(totalResults,article.length)
